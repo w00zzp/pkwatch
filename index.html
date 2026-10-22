@@ -13,6 +13,9 @@
   --bg:#07070d;
   --surface:#0f0f1a;
   --surface2:#161625;
+  --glass:rgba(15,15,26,.72);
+  --glass2:rgba(22,22,37,.65);
+  --blur:blur(18px);
   --border:#1e1e30;
   --border-hover:#2e2e48;
   --accent:#7c6fe0;
@@ -23,196 +26,209 @@
   --muted2:#9090a8;
   --green:#34d399;
   --red:#f87171;
-  --radius:14px;
+  --radius:16px;
   --radius-sm:10px;
   --font:'Inter',system-ui,sans-serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased}
+/* no tap highlight */
+*{-webkit-tap-highlight-color:transparent}
+button,a,input{-webkit-tap-highlight-color:transparent;tap-highlight-color:transparent}
 
 .shell{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:32px 16px 48px}
 
+/* wordmark */
 .wordmark{display:flex;align-items:center;gap:10px;margin-bottom:36px;user-select:none;text-decoration:none}
 .wordmark svg{color:var(--accent)}
 .wordmark-text{font-size:20px;font-weight:600;letter-spacing:-.3px;color:var(--text)}
 .wordmark-text span{color:var(--accent)}
 
 /* pages */
-.page{display:none;width:100%;max-width:420px;flex-direction:column;gap:0}
+.page{display:none;width:100%;max-width:420px;flex-direction:column}
 .page.on{display:flex}
 
+/* card */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px}
 .card-title{font-size:17px;font-weight:600;margin-bottom:4px}
 .card-sub{font-size:13px;color:var(--muted2);margin-bottom:22px;line-height:1.5}
 
+/* fields */
 .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
 .label{font-size:11px;font-weight:500;color:var(--muted2);letter-spacing:.04em}
 .input{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;color:var(--text);font-size:15px;font-family:var(--font);width:100%;transition:border-color .15s,box-shadow .15s;outline:none}
 .input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
 .input::placeholder{color:var(--muted)}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:var(--radius-sm);padding:12px 18px;font-family:var(--font);font-size:14px;font-weight:500;cursor:pointer;transition:opacity .15s,transform .1s;outline:none;white-space:nowrap}
-.btn:active{transform:scale(.97)}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:none;border-radius:var(--radius-sm);padding:12px 18px;font-family:var(--font);font-size:14px;font-weight:500;cursor:pointer;transition:opacity .15s,transform .1s;outline:none;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.96)}
 .btn-primary{background:var(--accent);color:#fff;width:100%;padding:14px}
 .btn-primary:hover{opacity:.88}
 .btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
 .btn-secondary:hover{border-color:var(--border-hover)}
 .btn-green{background:var(--green);color:#052016;font-weight:600}
-.btn-green:hover{opacity:.88}
-.btn-ghost{background:transparent;color:var(--muted2);border:1px solid var(--border);padding:9px 14px;font-size:13px}
-.btn-ghost:hover{color:var(--text);border-color:var(--border-hover)}
-.btn-danger{background:transparent;color:var(--red);border:1px solid var(--border);padding:9px 14px;font-size:13px}
+.btn-ghost{background:rgba(255,255,255,.06);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);color:var(--muted2);border:1px solid rgba(255,255,255,.08);padding:9px 14px;font-size:13px}
+.btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.15)}
+.btn-icon{background:rgba(255,255,255,.06);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius-sm);padding:9px;color:var(--muted2);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:color .15s,border-color .15s;-webkit-tap-highlight-color:transparent}
+.btn-icon:hover{color:var(--text);border-color:rgba(255,255,255,.15)}
+.btn-danger{background:transparent;color:var(--red);border:1px solid var(--border);padding:7px 12px;font-size:12px}
 
 .link-btn{background:none;border:none;color:var(--accent);font-family:var(--font);font-size:13px;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px}
-.link-btn:hover{opacity:.8}
-
+.or-sep{display:flex;align-items:center;gap:10px;margin:18px 0;color:var(--muted);font-size:12px}
+.or-sep::before,.or-sep::after{content:'';flex:1;height:1px;background:var(--border)}
+.join-row{display:flex;gap:8px}
+.join-row .input{flex:1;text-transform:uppercase;letter-spacing:.1em;font-weight:500}
 .msg{font-size:13px;color:var(--muted2);min-height:18px;margin-top:10px;line-height:1.4}
 .msg.err{color:var(--red)}
 .msg.ok{color:var(--green)}
-
-.divider{border:none;border-top:1px solid var(--border);margin:20px 0}
-.or-sep{display:flex;align-items:center;gap:10px;margin:18px 0;color:var(--muted);font-size:12px}
-.or-sep::before,.or-sep::after{content:'';flex:1;height:1px;background:var(--border)}
-
 .hint{font-size:12px;color:var(--muted);line-height:1.55;margin-top:12px}
 
-/* join row */
-.join-row{display:flex;gap:8px}
-.join-row .input{flex:1;text-transform:uppercase;letter-spacing:.1em;font-weight:500}
+/* avatar */
+.avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0;background:var(--accent-dim);color:var(--accent);border:2px solid rgba(124,111,224,.3);overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar-lg{width:72px;height:72px;font-size:26px;border-width:3px}
+.avatar-sm{width:28px;height:28px;font-size:11px;border-width:1.5px}
 
 /* ── ROOM ── */
-#pageRoom{width:100%;max-width:900px}
-.room-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+#pageRoom{width:100%;max-width:980px}
+
+.room-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px}
 .room-title{display:flex;align-items:center;gap:10px}
 .room-wordmark{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:600;color:var(--text);text-decoration:none}
 .room-wordmark svg{color:var(--accent)}
-.badge{background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:4px 12px;font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--accent)}
+.badge{background:var(--accent-dim);border:1px solid rgba(124,111,224,.3);border-radius:999px;padding:4px 12px;font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--accent)}
 .room-actions{display:flex;gap:8px;align-items:center}
 
+/* stage */
 .stage{position:relative;background:#000;border-radius:var(--radius);overflow:hidden;aspect-ratio:16/9;width:100%}
 video{width:100%;height:100%;display:block;background:#000}
 .guest-lock{position:absolute;inset:0;z-index:10;cursor:default;display:none}
-.stage-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .3s}
-.stage-overlay-text{color:rgba(255,255,255,.7);font-size:14px}
+.stage-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .3s;background:rgba(0,0,0,.4)}
+.stage-overlay-text{color:rgba(255,255,255,.8);font-size:14px;font-weight:400}
 
-.status-bar{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}
+/* status bar */
+.status-bar{display:flex;align-items:center;gap:8px;margin-top:10px}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .3s}
 .dot.on{background:var(--green)}
 .status-text{font-size:13px;color:var(--muted2);flex:1}
-.status-pill{background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:3px 10px;font-size:11px;color:var(--muted2)}
+.status-pill{background:rgba(255,255,255,.06);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid rgba(255,255,255,.08);border-radius:999px;padding:3px 10px;font-size:11px;color:var(--muted2)}
 
-.room-body{display:flex;gap:16px;align-items:flex-start;margin-top:16px}
-.room-left{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}
-.room-right{width:280px;flex-shrink:0}
+/* layout */
+.room-body{display:flex;gap:14px;align-items:flex-start;margin-top:14px}
+.room-left{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+.room-right{width:290px;flex-shrink:0;display:flex;flex-direction:column;gap:10px}
 
-.chat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;height:360px}
-.chat-header{padding:12px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:500;color:var(--muted2)}
-.msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
-.msgs::-webkit-scrollbar{width:4px}
-.msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.m{font-size:13px;line-height:1.4;max-width:88%}
-.m-name{font-size:10px;font-weight:500;color:var(--muted2);margin-bottom:3px}
-.m-bubble{display:inline-block;background:var(--surface2);padding:7px 11px;border-radius:10px;color:var(--text)}
-.m.me{align-self:flex-end;text-align:right}
+/* translucent chat */
+.chat{background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;height:380px}
+.chat-header{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.07);font-size:12px;font-weight:500;color:var(--muted2);letter-spacing:.03em;display:flex;align-items:center;gap:6px}
+.msgs{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.1) transparent}
+.msgs::-webkit-scrollbar{width:3px}
+.msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+
+/* chat message — rave style */
+.m{display:flex;gap:8px;align-items:flex-end}
+.m.me{flex-direction:row-reverse}
+.m-body{display:flex;flex-direction:column;gap:3px;max-width:78%}
+.m.me .m-body{align-items:flex-end}
+.m-name{font-size:10px;font-weight:500;color:var(--muted2);padding:0 2px}
 .m.me .m-name{color:var(--accent)}
-.m.me .m-bubble{background:var(--accent-dim)}
-.cf{display:flex;gap:8px;padding:10px;border-top:1px solid var(--border)}
-.cf .input{padding:9px 12px;font-size:14px}
-.cf .btn{padding:9px 14px;font-size:13px}
+.m-bubble{display:inline-block;background:rgba(255,255,255,.09);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);padding:8px 12px;border-radius:14px;border-bottom-left-radius:4px;font-size:13px;line-height:1.45;color:var(--text);word-break:break-word}
+.m.me .m-bubble{background:rgba(124,111,224,.28);border-bottom-left-radius:14px;border-bottom-right-radius:4px}
 
-@media(max-width:720px){
+/* chat input */
+.cf{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,255,255,.07);align-items:center}
+.cf .input{padding:9px 12px;font-size:14px;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1)}
+.cf .input:focus{border-color:var(--accent)}
+
+/* translucent status card */
+.status-card{background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:12px 14px}
+
+/* profile panel */
+.profile-card{background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:14px}
+.profile-row{display:flex;align-items:center;gap:10px}
+.profile-info{flex:1;min-width:0}
+.profile-name{font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.profile-email{font-size:11px;color:var(--muted2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* profile page */
+.profile-page-avatar{display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:22px}
+.avatar-upload{position:relative;cursor:pointer}
+.avatar-upload-overlay{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .2s}
+.avatar-upload:hover .avatar-upload-overlay{opacity:1}
+#avatarFileInput{display:none}
+
+@media(max-width:740px){
   .shell{padding:20px 12px 40px}
   .wordmark{margin-bottom:24px}
   .card{padding:22px 18px}
   .room-body{flex-direction:column}
   .room-right{width:100%}
-  .chat{height:240px}
+  .chat{height:260px}
   .room-header{flex-direction:column;align-items:flex-start}
   .room-actions{width:100%;justify-content:flex-end}
 }
 
-/* loading spinner */
-.spinner{width:20px;height:20px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+.spinner{width:20px;height:20px;border:2px solid rgba(255,255,255,.15);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 <div class="shell">
 
-  <!-- wordmark -->
   <a class="wordmark" id="mainWordmark" href="#">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.409 9.353C22.53 10.507 22.53 13.493 20.409 14.647L7.597 21.614C5.534 22.736 3 21.276 3 18.967L3 5.033C3 2.724 5.534 1.264 7.597 2.385L20.409 9.353Z"/></svg>
     <div class="wordmark-text">PK<span>Watch</span></div>
   </a>
 
-  <!-- PAGE: loading -->
-  <div class="page on" id="pageLoading" style="align-items:center;margin-top:60px">
-    <div class="spinner"></div>
-  </div>
+  <!-- loading -->
+  <div class="page on" id="pageLoading" style="align-items:center;margin-top:60px"><div class="spinner"></div></div>
 
-  <!-- PAGE: auth -->
+  <!-- auth -->
   <div class="page" id="pageAuth">
     <div class="card">
-      <!-- LOGIN -->
       <div id="authLogin">
         <div class="card-title">Entrar</div>
         <div class="card-sub">Bem-vindo de volta ao PKWatch.</div>
-        <div class="field">
-          <div class="label">E-mail</div>
-          <input class="input" id="loginEmail" type="email" placeholder="seu@email.com" autocomplete="email">
-        </div>
-        <div class="field">
-          <div class="label">Senha</div>
-          <input class="input" id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password">
-        </div>
+        <div class="field"><div class="label">E-mail</div><input class="input" id="loginEmail" type="email" placeholder="seu@email.com" autocomplete="email"></div>
+        <div class="field"><div class="label">Senha</div><input class="input" id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password"></div>
         <button class="btn btn-primary" id="loginBtn" style="margin-top:6px">Entrar</button>
         <div class="msg" id="loginMsg"></div>
         <div class="or-sep">ou</div>
-        <div style="text-align:center;font-size:13px;color:var(--muted2)">
-          Não tem conta? <button class="link-btn" id="goRegister">Criar conta</button>
-        </div>
+        <div style="text-align:center;font-size:13px;color:var(--muted2)">Não tem conta? <button class="link-btn" id="goRegister">Criar conta</button></div>
       </div>
-
-      <!-- REGISTER -->
       <div id="authRegister" style="display:none">
         <div class="card-title">Criar conta</div>
         <div class="card-sub">Grátis, sem cartão.</div>
-        <div class="field">
-          <div class="label">Nome</div>
-          <input class="input" id="regName" type="text" maxlength="20" placeholder="Como quer aparecer" autocomplete="name">
-        </div>
-        <div class="field">
-          <div class="label">E-mail</div>
-          <input class="input" id="regEmail" type="email" placeholder="seu@email.com" autocomplete="email">
-        </div>
-        <div class="field">
-          <div class="label">Senha</div>
-          <input class="input" id="regPass" type="password" placeholder="mínimo 6 caracteres" autocomplete="new-password">
-        </div>
+        <div class="field"><div class="label">Nome</div><input class="input" id="regName" type="text" maxlength="20" placeholder="Como quer aparecer" autocomplete="name"></div>
+        <div class="field"><div class="label">E-mail</div><input class="input" id="regEmail" type="email" placeholder="seu@email.com" autocomplete="email"></div>
+        <div class="field"><div class="label">Senha</div><input class="input" id="regPass" type="password" placeholder="mínimo 6 caracteres" autocomplete="new-password"></div>
         <button class="btn btn-primary" id="registerBtn" style="margin-top:6px">Criar conta</button>
         <div class="msg" id="registerMsg"></div>
         <div class="or-sep">ou</div>
-        <div style="text-align:center;font-size:13px;color:var(--muted2)">
-          Já tem conta? <button class="link-btn" id="goLogin">Entrar</button>
-        </div>
+        <div style="text-align:center;font-size:13px;color:var(--muted2)">Já tem conta? <button class="link-btn" id="goLogin">Entrar</button></div>
       </div>
     </div>
   </div>
 
-  <!-- PAGE: lobby -->
+  <!-- lobby -->
   <div class="page" id="pageLobby">
-    <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
-        <div>
-          <div class="card-title" id="lobbyGreeting">Olá!</div>
-          <div style="font-size:13px;color:var(--muted2);margin-top:2px">O que vamos assistir?</div>
+    <div class="card" style="margin-bottom:12px">
+      <!-- profile row -->
+      <div class="profile-row" style="margin-bottom:20px">
+        <div class="avatar" id="lobbyAvatar">?</div>
+        <div class="profile-info">
+          <div class="profile-name" id="lobbyName">–</div>
+          <div class="profile-email" id="lobbyEmail">–</div>
         </div>
-        <button class="btn-danger btn" id="logoutBtn" style="padding:7px 12px;font-size:12px">Sair</button>
+        <button class="btn-icon" id="openProfileBtn" title="Editar perfil">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+        <button class="btn btn-danger" id="logoutBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        </button>
       </div>
-      <div class="field">
-        <div class="label">Link do filme</div>
-        <input class="input" id="urlInput" placeholder="https://... (.mp4 ou página do filme)">
-      </div>
+      <div class="field"><div class="label">Link do filme</div><input class="input" id="urlInput" placeholder="https://... (.mp4 ou página do filme)"></div>
       <button class="btn btn-primary" id="createBtn">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
         Criar sala
@@ -227,7 +243,32 @@ video{width:100%;height:100%;display:block;background:#000}
     </div>
   </div>
 
-  <!-- PAGE: room -->
+  <!-- profile edit page -->
+  <div class="page" id="pageProfile">
+    <div class="card">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:22px">
+        <button class="btn-icon" id="backFromProfile">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        </button>
+        <div class="card-title" style="margin:0">Meu perfil</div>
+      </div>
+      <div class="profile-page-avatar">
+        <label class="avatar-upload" id="avatarUploadLabel">
+          <div class="avatar avatar-lg" id="profileAvatarBig">?</div>
+          <div class="avatar-upload-overlay">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <input type="file" id="avatarFileInput" accept="image/*,.gif">
+        </label>
+        <div style="font-size:12px;color:var(--muted)">Toque para trocar foto ou gif</div>
+      </div>
+      <div class="field"><div class="label">Nome</div><input class="input" id="profileNameInput" maxlength="20" placeholder="Seu nome"></div>
+      <button class="btn btn-primary" id="saveProfileBtn" style="margin-top:6px">Salvar</button>
+      <div class="msg" id="profileMsg"></div>
+    </div>
+  </div>
+
+  <!-- room -->
   <div class="page" id="pageRoom">
     <div class="room-header">
       <div class="room-title">
@@ -238,11 +279,12 @@ video{width:100%;height:100%;display:block;background:#000}
         <div class="badge" id="badge">–</div>
       </div>
       <div class="room-actions">
-        <button class="btn btn-ghost" id="copyBtn">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-          Copiar link
+        <button class="btn-icon" id="copyBtn" title="Copiar link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
         </button>
-        <button class="btn btn-ghost" id="leaveBtn">Sair</button>
+        <button class="btn-icon" id="leaveBtn" title="Sair da sala">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+        </button>
       </div>
     </div>
 
@@ -261,13 +303,30 @@ video{width:100%;height:100%;display:block;background:#000}
           <div class="status-pill" id="countPill">1 na sala</div>
         </div>
       </div>
+
       <div class="room-right">
+        <!-- profile mini -->
+        <div class="profile-card">
+          <div class="profile-row">
+            <div class="avatar" id="roomAvatar">?</div>
+            <div class="profile-info">
+              <div class="profile-name" id="roomName">–</div>
+              <div class="profile-email" style="font-size:11px;color:var(--muted2)" id="roomRole">–</div>
+            </div>
+          </div>
+        </div>
+        <!-- chat -->
         <div class="chat">
-          <div class="chat-header">Chat</div>
+          <div class="chat-header">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            Chat
+          </div>
           <div class="msgs" id="msgs"></div>
           <div class="cf">
             <input class="input" id="chatInput" maxlength="160" placeholder="Mensagem…">
-            <button class="btn btn-secondary" id="sendBtn">Enviar</button>
+            <button class="btn-icon" id="sendBtn" title="Enviar">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
           </div>
         </div>
       </div>
@@ -276,147 +335,196 @@ video{width:100%;height:100%;display:block;background:#000}
 
 </div>
 
-<!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 (function(){
 'use strict';
 
-// ── Supabase ─────────────────────────────────────────────
 var SUPA_URL = 'https://jqxrcyurvmgaikwjbimh.supabase.co';
 var SUPA_KEY = 'sb_publishable_tO6cYTMJh90adc6M7eToTw_5i-Vrrqe';
 var sb = supabase.createClient(SUPA_URL, SUPA_KEY);
 
 // ── state ────────────────────────────────────────────────
-var currentUser = null;
+var currentUser    = null;
 var currentProfile = null;
-var isHost = false;
-var roomCode = null;
-var movieUrl = '';
-var realtimeChannel = null;
-var peers = {};   // id → {name, ts}
-var suppress = false;
-var lastHostState = null;
+var isHost         = false;
+var roomCode       = null;
+var movieUrl       = '';
+var realtimeChannel= null;
+var peers          = {};
+var suppress       = false;
+var lastHostState  = null;
 var hostBcastTimer = null;
-var pingTimer = null;
-var pendingInvite = null; // {code, url} from hash
+var pingTimer      = null;
+var pendingInvite  = null;
+var prevPage       = 'pageLobby';
 
-var HOST_INTERVAL = 800;
-var DRIFT = 1.0;
-var PING_MS = 5000;
-var PEER_TIMEOUT = 18000;
+var HOST_INTERVAL  = 800;
+var DRIFT          = 1.0;
+var PING_MS        = 5000;
+var PEER_TIMEOUT   = 18000;
 
-// ── elements ─────────────────────────────────────────────
 var $ = function(id){ return document.getElementById(id); };
-var video = $('video');
-var guestLock = $('guestLock');
-var stageOverlay = $('stageOverlay');
-var stageOverlayTx = $('stageOverlayText');
+var video      = $('video');
+var guestLock  = $('guestLock');
+var stageOv    = $('stageOverlay');
+var stageOvTx  = $('stageOverlayText');
 
-// ── page routing ─────────────────────────────────────────
+// ── avatar helpers ────────────────────────────────────────
+var AVATAR_COLORS = ['#7c6fe0','#e06f9a','#6fb4e0','#6fe09a','#e0a96f','#c06fe0'];
+function avatarColor(name){
+  var h=0; for(var i=0;i<(name||'').length;i++) h=(h+name.charCodeAt(i))%AVATAR_COLORS.length;
+  return AVATAR_COLORS[h];
+}
+function setAvatarEl(el, profile){
+  if(!el) return;
+  var name = profile ? profile.name : '?';
+  var url  = profile ? profile.avatar_url : null;
+  if(url){
+    el.innerHTML='<img src="'+url+'" alt="'+name+'">';
+    el.style.background='transparent';
+  } else {
+    el.textContent = (name||'?')[0].toUpperCase();
+    el.style.background = avatarColor(name);
+    el.style.color = '#fff';
+  }
+}
+
+// ── page routing ──────────────────────────────────────────
 function showPage(id){
-  ['pageLoading','pageAuth','pageLobby','pageRoom'].forEach(function(p){
-    var el=$(p);
-    el.classList.remove('on');
+  ['pageLoading','pageAuth','pageLobby','pageProfile','pageRoom'].forEach(function(p){
+    $(p).classList.remove('on');
   });
   $(id).classList.add('on');
   $('mainWordmark').style.display = (id==='pageRoom') ? 'none' : 'flex';
 }
 
-// ── auth pages toggle ────────────────────────────────────
+// ── auth toggle ───────────────────────────────────────────
 $('goRegister').onclick = function(){ $('authLogin').style.display='none'; $('authRegister').style.display='block'; };
 $('goLogin').onclick    = function(){ $('authRegister').style.display='none'; $('authLogin').style.display='block'; };
 
-// ── register ─────────────────────────────────────────────
+// ── register ──────────────────────────────────────────────
 $('registerBtn').onclick = async function(){
-  var name  = $('regName').value.trim();
-  var email = $('regEmail').value.trim();
-  var pass  = $('regPass').value;
-  if(!name||!email||!pass) return setAuthMsg('register','Preencha todos os campos.','err');
-  if(pass.length<6) return setAuthMsg('register','Senha precisa ter ao menos 6 caracteres.','err');
-  setAuthMsg('register','Criando conta…');
-  var res = await sb.auth.signUp({email:email, password:pass, options:{data:{name:name}}});
-  if(res.error) return setAuthMsg('register', res.error.message, 'err');
-  // session starts immediately (email confirmation off by default on new projects)
-  setAuthMsg('register','Conta criada!','ok');
+  var name=$('regName').value.trim(), email=$('regEmail').value.trim(), pass=$('regPass').value;
+  if(!name||!email||!pass) return setMsg('registerMsg','Preencha todos os campos.','err');
+  if(pass.length<6) return setMsg('registerMsg','Senha precisa ter ao menos 6 caracteres.','err');
+  setMsg('registerMsg','Criando conta…');
+  var res=await sb.auth.signUp({email:email,password:pass,options:{data:{name:name}}});
+  if(res.error) return setMsg('registerMsg',res.error.message,'err');
+  setMsg('registerMsg','Conta criada!','ok');
 };
 
-// ── login ────────────────────────────────────────────────
+// ── login ─────────────────────────────────────────────────
 $('loginBtn').onclick = async function(){
-  var email = $('loginEmail').value.trim();
-  var pass  = $('loginPass').value;
-  if(!email||!pass) return setAuthMsg('login','Preencha e-mail e senha.','err');
-  setAuthMsg('login','Entrando…');
-  var res = await sb.auth.signInWithPassword({email:email, password:pass});
-  if(res.error) return setAuthMsg('login', res.error.message==='Invalid login credentials'?'E-mail ou senha incorretos.':res.error.message, 'err');
+  var email=$('loginEmail').value.trim(), pass=$('loginPass').value;
+  if(!email||!pass) return setMsg('loginMsg','Preencha e-mail e senha.','err');
+  setMsg('loginMsg','Entrando…');
+  var res=await sb.auth.signInWithPassword({email:email,password:pass});
+  if(res.error) return setMsg('loginMsg',res.error.message==='Invalid login credentials'?'E-mail ou senha incorretos.':res.error.message,'err');
 };
 
-function setAuthMsg(form, txt, type){
-  var el = $(form==='login'?'loginMsg':'registerMsg');
-  el.textContent = txt||'';
-  el.className = 'msg'+(type?' '+type:'');
+// ── logout ────────────────────────────────────────────────
+$('logoutBtn').onclick = async function(){ await sb.auth.signOut(); };
+
+// ── profile page ──────────────────────────────────────────
+$('openProfileBtn').onclick = function(){
+  prevPage='pageLobby';
+  $('profileNameInput').value = currentProfile?currentProfile.name:'';
+  setAvatarEl($('profileAvatarBig'), currentProfile);
+  setMsg('profileMsg','');
+  showPage('pageProfile');
+};
+$('backFromProfile').onclick = function(){ showPage(prevPage); };
+
+$('avatarFileInput').onchange = async function(){
+  var file = this.files[0];
+  if(!file) return;
+  if(file.size > 2*1024*1024) return setMsg('profileMsg','Arquivo muito grande (máx 2MB).','err');
+  setMsg('profileMsg','Enviando…');
+  // store as base64 in profile for simplicity (no storage bucket needed)
+  var reader = new FileReader();
+  reader.onload = async function(e){
+    var dataUrl = e.target.result;
+    // preview
+    $('profileAvatarBig').innerHTML='<img src="'+dataUrl+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+    // save to profile
+    var res = await sb.from('profiles').update({avatar_url: dataUrl}).eq('id', currentUser.id);
+    if(res.error) return setMsg('profileMsg','Erro ao salvar foto.','err');
+    currentProfile.avatar_url = dataUrl;
+    updateAllAvatars();
+    setMsg('profileMsg','Foto salva!','ok');
+  };
+  reader.readAsDataURL(file);
+};
+
+$('saveProfileBtn').onclick = async function(){
+  var name = $('profileNameInput').value.trim();
+  if(!name) return setMsg('profileMsg','Digite um nome.','err');
+  setMsg('profileMsg','Salvando…');
+  var res = await sb.from('profiles').update({name:name}).eq('id', currentUser.id);
+  if(res.error) return setMsg('profileMsg','Erro ao salvar.','err');
+  currentProfile.name = name;
+  updateAllAvatars();
+  setMsg('profileMsg','Salvo!','ok');
+  setTimeout(function(){ showPage('pageLobby'); refreshLobby(); }, 800);
+};
+
+function updateAllAvatars(){
+  setAvatarEl($('lobbyAvatar'), currentProfile);
+  setAvatarEl($('roomAvatar'), currentProfile);
+  setAvatarEl($('profileAvatarBig'), currentProfile);
 }
 
-// ── logout ───────────────────────────────────────────────
-$('logoutBtn').onclick = async function(){
-  await sb.auth.signOut();
-};
-
-// ── auth state listener ──────────────────────────────────
+// ── auth state ────────────────────────────────────────────
 sb.auth.onAuthStateChange(async function(event, session){
   if(session && session.user){
     currentUser = session.user;
-    // load profile
     var pr = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
     currentProfile = pr.data;
-    // check pending invite from hash
+    // add avatar_url col if missing (graceful)
+    if(currentProfile && !('avatar_url' in currentProfile)) currentProfile.avatar_url = null;
     parsePendingHash();
     if(pendingInvite){
       enterRoom(pendingInvite.code, pendingInvite.url, false);
-      pendingInvite = null;
+      pendingInvite=null;
     } else {
       showPage('pageLobby');
-      $('lobbyGreeting').textContent = 'Olá, '+(currentProfile?currentProfile.name:currentUser.email.split('@')[0])+'!';
+      refreshLobby();
     }
   } else {
-    currentUser = null;
-    currentProfile = null;
+    currentUser=null; currentProfile=null;
     showPage('pageAuth');
   }
 });
 
-// ── init ─────────────────────────────────────────────────
+function refreshLobby(){
+  $('lobbyName').textContent  = currentProfile?currentProfile.name:(currentUser?currentUser.email.split('@')[0]:'–');
+  $('lobbyEmail').textContent = currentUser?currentUser.email:'–';
+  setAvatarEl($('lobbyAvatar'), currentProfile);
+}
+
+// ── init ──────────────────────────────────────────────────
 (async function(){
   parsePendingHash();
   var s = await sb.auth.getSession();
   if(!s.data.session){
     showPage('pageAuth');
-    if(pendingInvite){
-      // show "entre para assistir" message
-      setAuthMsg('login','Entre ou crie uma conta para entrar na sala '+pendingInvite.code+'.','ok');
-    }
+    if(pendingInvite) setMsg('loginMsg','Entre para assistir à sala '+pendingInvite.code+'.','ok');
   }
-  // onAuthStateChange handles the rest
 })();
 
-// ── hash parsing ─────────────────────────────────────────
 function parsePendingHash(){
-  var h = location.hash.replace(/^#/,'');
-  if(!h) return;
-  var p = new URLSearchParams(h);
-  var s = p.get('s'), v = p.get('v');
-  if(s){
-    pendingInvite = {code:s.toUpperCase(), url:v?decodeURIComponent(v):''};
-    if(v) $('urlInput').value = decodeURIComponent(v);
-    $('codeInput').value = s.toUpperCase();
-  }
+  var h=location.hash.replace(/^#/,''); if(!h) return;
+  var p=new URLSearchParams(h);
+  var s=p.get('s'),v=p.get('v');
+  if(s){ pendingInvite={code:s.toUpperCase(),url:v?decodeURIComponent(v):''}; }
 }
 
-// ── url resolver ─────────────────────────────────────────
+// ── url ───────────────────────────────────────────────────
 function normUrl(u){
   u=(u||'').trim();
   if(!u) return '';
-  if(u.indexOf('//')=== 0) u='https:'+u;
+  if(u.startsWith('//')) u='https:'+u;
   if(u.startsWith('http://')) u='https://'+u.slice(7);
   if(!u.startsWith('https://')) u='https://'+u;
   return u;
@@ -425,227 +533,188 @@ async function resolveUrl(u){
   if(/\.mp4(\?|$)/i.test(u)) return u;
   var proxies=['https://api.allorigins.win/raw?url=','https://corsproxy.io/?'];
   for(var i=0;i<proxies.length;i++){
-    try{
-      var r=await fetch(proxies[i]+encodeURIComponent(u));
-      if(!r.ok) continue;
-      var t=await r.text();
-      var m=t.match(/https?:\/\/[^"'\s\\]+\.mp4/);
-      if(m) return m[0];
-    }catch(e){}
+    try{ var r=await fetch(proxies[i]+encodeURIComponent(u)); if(!r.ok) continue;
+      var t=await r.text(); var m=t.match(/https?:\/\/[^"'\s\\]+\.mp4/); if(m) return m[0]; }catch(e){}
   }
   return u;
 }
 
-// ── lobby ─────────────────────────────────────────────────
-function setLobbyMsg(t,type){ var el=$('lobbyMsg'); el.textContent=t||''; el.className='msg'+(type?' '+type:''); }
+// ── lobby actions ─────────────────────────────────────────
+function setLobbyMsg(t,type){ setMsg('lobbyMsg',t,type); }
 
 $('createBtn').onclick = async function(){
-  var raw = normUrl($('urlInput').value);
+  var raw=normUrl($('urlInput').value);
   if(!raw) return setLobbyMsg('Cole o link do filme.','err');
   setLobbyMsg('Procurando o vídeo…');
-  var url = normUrl(await resolveUrl(raw));
-  var code = genCode();
-  // save room to db
-  await sb.from('rooms').insert({id:code, host_id:currentUser.id, movie_url:url});
-  setLobbyMsg('Conectando…');
-  enterRoom(code, url, true);
+  var url=normUrl(await resolveUrl(raw));
+  var code=genCode();
+  await sb.from('rooms').insert({id:code,host_id:currentUser.id,movie_url:url});
+  enterRoom(code,url,true);
 };
 
 $('joinBtn').onclick = async function(){
-  var c = ($('codeInput').value||'').trim().toUpperCase();
+  var c=($('codeInput').value||'').trim().toUpperCase();
   if(c.length<3) return setLobbyMsg('Digite o código da sala.','err');
   setLobbyMsg('Buscando sala…');
-  // fetch room url from db
-  var res = await sb.from('rooms').select('movie_url').eq('id',c).single();
+  var res=await sb.from('rooms').select('movie_url').eq('id',c).single();
   if(res.error||!res.data) return setLobbyMsg('Sala não encontrada.','err');
-  enterRoom(c, res.data.movie_url, false);
+  enterRoom(c,res.data.movie_url,false);
 };
 
 function genCode(){
-  var a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  var c=''; for(var i=0;i<4;i++) c+=a[Math.floor(Math.random()*a.length)];
+  var a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',c='';
+  for(var i=0;i<4;i++) c+=a[Math.floor(Math.random()*a.length)];
   return c;
 }
 
-// ── enter room ───────────────────────────────────────────
-function enterRoom(code, url, host){
-  roomCode = code;
-  movieUrl = url;
-  isHost   = host;
-
+// ── enter room ────────────────────────────────────────────
+function enterRoom(code,url,host){
+  roomCode=code; movieUrl=url; isHost=host;
   showPage('pageRoom');
-  $('badge').textContent = 'SALA '+code;
+  $('badge').textContent='SALA '+code;
 
-  video.src = url;
-  video.load();
+  // room profile mini
+  setAvatarEl($('roomAvatar'), currentProfile);
+  $('roomName').textContent = currentProfile?currentProfile.name:'?';
+  $('roomRole').textContent = isHost ? 'Host · controla o player' : 'Convidado';
 
-  if(isHost){
-    video.controls = true;
-    guestLock.style.display = 'none';
-    stageOverlayTx.textContent = 'Toque no play para começar';
-    try{ history.replaceState(null,'','#s='+code+'&v='+encodeURIComponent(url)); }catch(e){}
-  } else {
-    video.controls = false;
-    guestLock.style.display = 'block';
-    stageOverlayTx.textContent = 'Aguardando o host iniciar…';
-  }
-  stageOverlay.style.opacity = '1';
+  video.src=url; video.load();
+  if(isHost){ video.controls=true; guestLock.style.display='none'; stageOvTx.textContent='Toque no play para começar'; }
+  else { video.controls=false; guestLock.style.display='block'; stageOvTx.textContent='Aguardando o host iniciar…'; }
+  stageOv.style.opacity='1';
 
   subscribeRealtime(code);
-
   if(isHost){
     clearInterval(hostBcastTimer);
-    hostBcastTimer = setInterval(hostBroadcast, HOST_INTERVAL);
+    hostBcastTimer=setInterval(hostBroadcast,HOST_INTERVAL);
+    try{ history.replaceState(null,'','#s='+code+'&v='+encodeURIComponent(url)); }catch(e){}
   }
-
   clearInterval(pingTimer);
-  pingTimer = setInterval(function(){
-    sendPresence();
-    prunePeers();
-  }, PING_MS);
-
+  pingTimer=setInterval(function(){ sendPresence(); prunePeers(); },PING_MS);
   sendPresence();
-  if(!isHost) setTimeout(function(){ broadcast({t:'hello', by:myId(), name:myName()}); }, 400);
-
-  setStatus(isHost ? 'Você é o host' : 'Conectado como convidado');
+  if(!isHost) setTimeout(function(){ broadcast({t:'hello',by:myId(),name:myName()}); },400);
+  setStatus(isHost?'Você é o host':'Conectado como convidado');
   renderPeers();
 }
 
-// ── Supabase Realtime ─────────────────────────────────────
+// ── realtime ──────────────────────────────────────────────
 function subscribeRealtime(code){
   if(realtimeChannel){ sb.removeChannel(realtimeChannel); realtimeChannel=null; }
-
-  realtimeChannel = sb.channel('room:'+code, {
-    config: { broadcast: { self: false }, presence: { key: myId() } }
-  });
-
+  realtimeChannel=sb.channel('room:'+code,{config:{broadcast:{self:false},presence:{key:myId()}}});
   realtimeChannel
-    .on('broadcast', {event:'*'}, function(payload){
-      onMsg(payload.payload);
-    })
-    .on('presence', {event:'sync'}, function(){
-      var state = realtimeChannel.presenceState();
-      peers = {};
+    .on('broadcast',{event:'*'},function(p){ onMsg(p.payload); })
+    .on('presence',{event:'sync'},function(){
+      var state=realtimeChannel.presenceState();
+      peers={};
       Object.keys(state).forEach(function(k){
-        var entry = state[k][0];
-        if(entry && entry.id !== myId()) peers[entry.id] = {name:entry.name, ts:Date.now()};
+        var e=state[k][0];
+        if(e&&e.id!==myId()) peers[e.id]={name:e.name,avatar:e.avatar,ts:Date.now()};
       });
       renderPeers();
     })
-    .subscribe(function(status){
-      if(status==='SUBSCRIBED'){
+    .subscribe(function(s){
+      if(s==='SUBSCRIBED'){
         $('dot').className='dot on';
-        realtimeChannel.track({id:myId(), name:myName()});
+        realtimeChannel.track({id:myId(),name:myName(),avatar:myAvatar()});
       }
     });
 }
 
-function broadcast(obj){
-  if(!realtimeChannel) return;
-  realtimeChannel.send({type:'broadcast', event:'msg', payload:obj});
-}
+function broadcast(obj){ if(!realtimeChannel) return; realtimeChannel.send({type:'broadcast',event:'msg',payload:obj}); }
+function sendPresence(){ if(realtimeChannel) realtimeChannel.track({id:myId(),name:myName(),avatar:myAvatar()}); }
+function prunePeers(){ var now=Date.now(); Object.keys(peers).forEach(function(k){ if(now-peers[k].ts>PEER_TIMEOUT) delete peers[k]; }); renderPeers(); }
+function renderPeers(){ var n=Object.keys(peers).length+1; $('countPill').textContent=n+(n===1?' na sala':' na sala'); }
 
-// ── presence ──────────────────────────────────────────────
-function sendPresence(){
-  if(realtimeChannel) realtimeChannel.track({id:myId(), name:myName()});
-}
-function prunePeers(){
-  var now=Date.now();
-  Object.keys(peers).forEach(function(k){ if(now-peers[k].ts>PEER_TIMEOUT) delete peers[k]; });
-  renderPeers();
-}
-function renderPeers(){
-  var n=Object.keys(peers).length+1;
-  $('countPill').textContent=n+(n===1?' na sala':' na sala');
-}
-
-// ── host broadcast ────────────────────────────────────────
 function hostBroadcast(){
   if(!isHost) return;
-  broadcast({t:'s', by:myId(), playing:!video.paused, time:video.currentTime||0, ts:Date.now()});
+  broadcast({t:'s',by:myId(),playing:!video.paused,time:video.currentTime||0,ts:Date.now()});
 }
 
-// ── apply host state (guest) ──────────────────────────────
 function applyHostState(m){
-  lastHostState = m;
+  lastHostState=m;
   if(video.readyState<1) return;
-  var lat = m.playing ? Math.min((Date.now()-m.ts)/1000,30) : 0;
-  var target = (m.time||0)+lat;
-  var drift = Math.abs((video.currentTime||0)-target);
+  var lat=m.playing?Math.min((Date.now()-m.ts)/1000,30):0;
+  var target=(m.time||0)+lat;
+  var drift=Math.abs((video.currentTime||0)-target);
   suppress=true;
   if(drift>DRIFT){ try{video.currentTime=target}catch(e){} }
-  if(m.playing&&video.paused)  video.play().catch(function(){});
+  if(m.playing&&video.paused) video.play().catch(function(){});
   if(!m.playing&&!video.paused) video.pause();
   clearTimeout(applyHostState._t);
   applyHostState._t=setTimeout(function(){suppress=false;},600);
-  stageOverlay.style.opacity='0';
+  stageOv.style.opacity='0';
 }
 
-// ── incoming messages ─────────────────────────────────────
 function onMsg(m){
   if(!m||!m.t) return;
-  if(m.by) peers[m.by]={name:m.name||'?', ts:Date.now()};
-
-  if(m.t==='s'){
-    if(!isHost) applyHostState(m);
-  } else if(m.t==='hello'){
-    if(isHost){ hostBroadcast(); setTimeout(hostBroadcast,400); }
-  } else if(m.t==='chat' && m.by!==myId()){
-    addMsg(m.name||'?', m.text||'', false);
-  }
+  if(m.by) peers[m.by]={name:m.name||'?',avatar:m.avatar||null,ts:Date.now()};
+  if(m.t==='s'){ if(!isHost) applyHostState(m); }
+  else if(m.t==='hello'){ if(isHost){ hostBroadcast(); setTimeout(hostBroadcast,400); } }
+  else if(m.t==='chat'&&m.by!==myId()){ addMsg(m.name||'?',m.avatar||null,m.text||'',false); }
   renderPeers();
 }
 
 // ── video events ──────────────────────────────────────────
-video.addEventListener('play',   function(){ if(isHost&&!suppress){ hostBroadcast(); stageOverlay.style.opacity='0'; }});
+video.addEventListener('play',   function(){ if(isHost&&!suppress){ hostBroadcast(); stageOv.style.opacity='0'; }});
 video.addEventListener('pause',  function(){ if(isHost&&!suppress) hostBroadcast(); });
 video.addEventListener('seeked', function(){ if(isHost&&!suppress) hostBroadcast(); });
-video.addEventListener('canplay',function(){ if(isHost) stageOverlay.style.opacity='0'; });
-video.addEventListener('waiting',function(){ stageOverlay.style.opacity='1'; stageOverlayTx.textContent='Carregando…'; });
+video.addEventListener('canplay',function(){ if(isHost) stageOv.style.opacity='0'; });
+video.addEventListener('waiting',function(){ stageOv.style.opacity='1'; stageOvTx.textContent='Carregando…'; });
 video.addEventListener('loadedmetadata',function(){ if(!isHost&&lastHostState) applyHostState(lastHostState); });
 
-// ── copy link ─────────────────────────────────────────────
+// ── copy ──────────────────────────────────────────────────
 $('copyBtn').onclick=function(){
   var link=location.origin+location.pathname+'#s='+roomCode+'&v='+encodeURIComponent(movieUrl);
   if(navigator.clipboard&&navigator.clipboard.writeText){
     navigator.clipboard.writeText(link).then(
       function(){ setStatus('Link copiado!'); setTimeout(function(){setStatus(isHost?'Você é o host':'Conectado como convidado');},2000); },
-      function(){ prompt('Copie o link:',link); }
+      function(){ prompt('Copie:',link); }
     );
-  } else { prompt('Copie o link:',link); }
+  } else { prompt('Copie:',link); }
 };
 
 // ── leave ─────────────────────────────────────────────────
 $('leaveBtn').onclick=function(){
-  broadcast({t:'bye',by:myId()});
-  cleanup();
-  showPage('pageLobby');
+  broadcast({t:'bye',by:myId()}); cleanup(); showPage('pageLobby');
 };
-$('roomHomeLink').onclick=function(e){e.preventDefault();$('leaveBtn').click();};
+$('roomHomeLink').onclick=function(e){ e.preventDefault(); $('leaveBtn').click(); };
 
 function cleanup(){
-  clearInterval(hostBcastTimer);
-  clearInterval(pingTimer);
+  clearInterval(hostBcastTimer); clearInterval(pingTimer);
   if(realtimeChannel){ sb.removeChannel(realtimeChannel); realtimeChannel=null; }
-  video.pause(); video.src='';
-  peers={};
+  video.pause(); video.src=''; peers={};
 }
 
 // ── chat ──────────────────────────────────────────────────
 $('sendBtn').onclick=function(){
   var v=$('chatInput').value.trim(); if(!v) return;
   $('chatInput').value='';
-  addMsg(myName(),v,true);
-  broadcast({t:'chat',by:myId(),name:myName(),text:v});
+  addMsg(myName(),myAvatar(),v,true);
+  broadcast({t:'chat',by:myId(),name:myName(),avatar:myAvatar(),text:v});
 };
-$('chatInput').addEventListener('keydown',function(e){ if(e.key==='Enter'){e.preventDefault();$('sendBtn').click();} });
+$('chatInput').addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); $('sendBtn').click(); }});
 
-function addMsg(name,text,me){
-  var d=document.createElement('div'); d.className='m'+(me?' me':'');
-  var n=document.createElement('div'); n.className='m-name'; n.textContent=name;
-  var b=document.createElement('div'); b.className='m-bubble'; b.textContent=text;
-  d.appendChild(n); d.appendChild(b);
-  var box=$('msgs'); box.appendChild(d);
+function addMsg(name, avatarData, text, me){
+  var wrap=document.createElement('div'); wrap.className='m'+(me?' me':'');
+
+  // avatar
+  var av=document.createElement('div'); av.className='avatar avatar-sm';
+  if(avatarData){
+    av.innerHTML='<img src="'+avatarData+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+    av.style.background='transparent';
+  } else {
+    av.textContent=(name||'?')[0].toUpperCase();
+    av.style.background=avatarColor(name||'?');
+    av.style.color='#fff';
+  }
+
+  var body=document.createElement('div'); body.className='m-body';
+  var nameEl=document.createElement('div'); nameEl.className='m-name'; nameEl.textContent=name;
+  var bubble=document.createElement('div'); bubble.className='m-bubble'; bubble.textContent=text;
+  body.appendChild(nameEl); body.appendChild(bubble);
+
+  wrap.appendChild(av); wrap.appendChild(body);
+  var box=$('msgs'); box.appendChild(wrap);
   while(box.children.length>100) box.removeChild(box.firstChild);
   box.scrollTop=box.scrollHeight;
 }
@@ -653,12 +722,16 @@ function addMsg(name,text,me){
 // ── helpers ───────────────────────────────────────────────
 function myId(){ return currentUser?currentUser.id:'anon'; }
 function myName(){ return currentProfile?currentProfile.name:(currentUser?currentUser.email.split('@')[0]:'?'); }
+function myAvatar(){ return currentProfile?currentProfile.avatar_url:null; }
 function setStatus(t){ $('statusText').textContent=t||''; }
+function setMsg(id,txt,type){ var el=$(id); el.textContent=txt||''; el.className='msg'+(type?' '+type:''); }
 
-window.addEventListener('pagehide',function(){
-  broadcast({t:'bye',by:myId()});
-  cleanup();
-});
+window.addEventListener('pagehide',function(){ try{ broadcast({t:'bye',by:myId()}); cleanup(); }catch(e){} });
+
+// ── add avatar_url column if not exists ───────────────────
+(async function(){
+  await sb.rpc('add_avatar_col_if_missing').catch(function(){});
+})();
 
 })();
 </script>
