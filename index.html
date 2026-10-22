@@ -22,7 +22,6 @@
   --muted:#6b6b88;
   --muted2:#9090a8;
   --green:#34d399;
-  --green-bg:#0d2a1f;
   --red:#f87171;
   --radius:14px;
   --radius-sm:10px;
@@ -31,31 +30,28 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased}
 
-/* layout */
 .shell{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:32px 16px 48px}
 
-/* wordmark */
-.wordmark{display:flex;align-items:center;gap:10px;margin-bottom:40px;user-select:none}
+.wordmark{display:flex;align-items:center;gap:10px;margin-bottom:36px;user-select:none;text-decoration:none}
 .wordmark svg{color:var(--accent)}
 .wordmark-text{font-size:20px;font-weight:600;letter-spacing:-.3px;color:var(--text)}
 .wordmark-text span{color:var(--accent)}
 
-/* card */
-.card{width:100%;max-width:480px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;display:flex;flex-direction:column;gap:0}
+/* pages */
+.page{display:none;width:100%;max-width:420px;flex-direction:column;gap:0}
+.page.on{display:flex}
 
-/* section divider inside card */
-.divider{border:none;border-top:1px solid var(--border);margin:22px 0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px}
+.card-title{font-size:17px;font-weight:600;margin-bottom:4px}
+.card-sub{font-size:13px;color:var(--muted2);margin-bottom:22px;line-height:1.5}
 
-/* field */
-.field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
-.field:last-of-type{margin-bottom:0}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
 .label{font-size:11px;font-weight:500;color:var(--muted2);letter-spacing:.04em}
 .input{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px 14px;color:var(--text);font-size:15px;font-family:var(--font);width:100%;transition:border-color .15s,box-shadow .15s;outline:none}
 .input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
 .input::placeholder{color:var(--muted)}
 
-/* buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:var(--radius-sm);padding:12px 18px;font-family:var(--font);font-size:14px;font-weight:500;cursor:pointer;transition:opacity .15s,transform .1s,background .15s;outline:none;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:var(--radius-sm);padding:12px 18px;font-family:var(--font);font-size:14px;font-weight:500;cursor:pointer;transition:opacity .15s,transform .1s;outline:none;white-space:nowrap}
 .btn:active{transform:scale(.97)}
 .btn-primary{background:var(--accent);color:#fff;width:100%;padding:14px}
 .btn-primary:hover{opacity:.88}
@@ -65,129 +61,181 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--f
 .btn-green:hover{opacity:.88}
 .btn-ghost{background:transparent;color:var(--muted2);border:1px solid var(--border);padding:9px 14px;font-size:13px}
 .btn-ghost:hover{color:var(--text);border-color:var(--border-hover)}
+.btn-danger{background:transparent;color:var(--red);border:1px solid var(--border);padding:9px 14px;font-size:13px}
+
+.link-btn{background:none;border:none;color:var(--accent);font-family:var(--font);font-size:13px;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px}
+.link-btn:hover{opacity:.8}
+
+.msg{font-size:13px;color:var(--muted2);min-height:18px;margin-top:10px;line-height:1.4}
+.msg.err{color:var(--red)}
+.msg.ok{color:var(--green)}
+
+.divider{border:none;border-top:1px solid var(--border);margin:20px 0}
+.or-sep{display:flex;align-items:center;gap:10px;margin:18px 0;color:var(--muted);font-size:12px}
+.or-sep::before,.or-sep::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.hint{font-size:12px;color:var(--muted);line-height:1.55;margin-top:12px}
 
 /* join row */
 .join-row{display:flex;gap:8px}
 .join-row .input{flex:1;text-transform:uppercase;letter-spacing:.1em;font-weight:500}
 
-/* or separator */
-.or-sep{display:flex;align-items:center;gap:10px;margin:20px 0;color:var(--muted);font-size:12px}
-.or-sep::before,.or-sep::after{content:'';flex:1;height:1px;background:var(--border)}
-
-/* hint */
-.hint{font-size:12px;color:var(--muted);line-height:1.55;margin-top:14px}
-
-/* msg */
-.msg{font-size:13px;color:var(--muted2);min-height:18px;margin-top:12px;transition:color .2s}
-.msg.err{color:var(--red)}
-.msg.ok{color:var(--green)}
-
-/* ---- ROOM ---- */
-#room{display:none;width:100%;max-width:900px;flex-direction:column;gap:0}
-#room.on{display:flex}
-
+/* ── ROOM ── */
+#pageRoom{width:100%;max-width:900px}
 .room-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
 .room-title{display:flex;align-items:center;gap:10px}
-.room-wordmark{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:600;color:var(--text)}
+.room-wordmark{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:600;color:var(--text);text-decoration:none}
 .room-wordmark svg{color:var(--accent)}
 .badge{background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:4px 12px;font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--accent)}
 .room-actions{display:flex;gap:8px;align-items:center}
 
-/* stage */
 .stage{position:relative;background:#000;border-radius:var(--radius);overflow:hidden;aspect-ratio:16/9;width:100%}
 video{width:100%;height:100%;display:block;background:#000}
+.guest-lock{position:absolute;inset:0;z-index:10;cursor:default;display:none}
 .stage-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;transition:opacity .3s}
-.stage-overlay-text{color:rgba(255,255,255,.7);font-size:14px;font-weight:400;letter-spacing:.01em}
+.stage-overlay-text{color:rgba(255,255,255,.7);font-size:14px}
 
-/* guest lock overlay */
-.guest-lock{position:absolute;inset:0;z-index:10;cursor:default}
-
-/* status bar */
 .status-bar{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0;transition:background .3s}
 .dot.on{background:var(--green)}
 .status-text{font-size:13px;color:var(--muted2);flex:1}
 .status-pill{background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:3px 10px;font-size:11px;color:var(--muted2)}
 
-/* layout: stage + chat side by side on desktop */
 .room-body{display:flex;gap:16px;align-items:flex-start;margin-top:16px}
 .room-left{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}
 .room-right{width:280px;flex-shrink:0}
 
-/* chat */
 .chat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;height:360px}
-.chat-header{padding:12px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:500;color:var(--muted2);letter-spacing:.03em}
+.chat-header{padding:12px 16px;border-bottom:1px solid var(--border);font-size:12px;font-weight:500;color:var(--muted2)}
 .msgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
 .msgs::-webkit-scrollbar{width:4px}
-.msgs::-webkit-scrollbar-track{background:transparent}
 .msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .m{font-size:13px;line-height:1.4;max-width:88%}
-.m-name{font-size:10px;font-weight:500;color:var(--muted2);margin-bottom:3px;letter-spacing:.02em}
+.m-name{font-size:10px;font-weight:500;color:var(--muted2);margin-bottom:3px}
 .m-bubble{display:inline-block;background:var(--surface2);padding:7px 11px;border-radius:10px;color:var(--text)}
 .m.me{align-self:flex-end;text-align:right}
 .m.me .m-name{color:var(--accent)}
-.m.me .m-bubble{background:var(--accent-dim);color:var(--text)}
+.m.me .m-bubble{background:var(--accent-dim)}
 .cf{display:flex;gap:8px;padding:10px;border-top:1px solid var(--border)}
 .cf .input{padding:9px 12px;font-size:14px}
 .cf .btn{padding:9px 14px;font-size:13px}
 
-/* mobile: stack */
 @media(max-width:720px){
   .shell{padding:20px 12px 40px}
-  .wordmark{margin-bottom:28px}
+  .wordmark{margin-bottom:24px}
   .card{padding:22px 18px}
   .room-body{flex-direction:column}
   .room-right{width:100%}
-  .chat{height:260px}
+  .chat{height:240px}
   .room-header{flex-direction:column;align-items:flex-start}
   .room-actions{width:100%;justify-content:flex-end}
 }
+
+/* loading spinner */
+.spinner{width:20px;height:20px;border:2px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 <div class="shell">
 
   <!-- wordmark -->
-  <div class="wordmark" id="mainWordmark">
+  <a class="wordmark" id="mainWordmark" href="#">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.409 9.353C22.53 10.507 22.53 13.493 20.409 14.647L7.597 21.614C5.534 22.736 3 21.276 3 18.967L3 5.033C3 2.724 5.534 1.264 7.597 2.385L20.409 9.353Z"/></svg>
     <div class="wordmark-text">PK<span>Watch</span></div>
+  </a>
+
+  <!-- PAGE: loading -->
+  <div class="page on" id="pageLoading" style="align-items:center;margin-top:60px">
+    <div class="spinner"></div>
   </div>
 
-  <!-- SETUP -->
-  <div class="card" id="setup">
-    <div class="field">
-      <div class="label">Link do filme</div>
-      <input class="input" id="urlInput" placeholder="https://... (.mp4 ou página do filme)" value="https://awnagk.gviudclrb.com/vod/71796FA488A24F5FB8BEC47F5F7E2D18_media.mp4">
-    </div>
-    <div class="field">
-      <div class="label">Seu nome</div>
-      <input class="input" id="nameInput" maxlength="16" placeholder="Como você quer aparecer">
-    </div>
-    <button class="btn btn-primary" id="createBtn" style="margin-top:8px">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-      Criar sala
-    </button>
+  <!-- PAGE: auth -->
+  <div class="page" id="pageAuth">
+    <div class="card">
+      <!-- LOGIN -->
+      <div id="authLogin">
+        <div class="card-title">Entrar</div>
+        <div class="card-sub">Bem-vindo de volta ao PKWatch.</div>
+        <div class="field">
+          <div class="label">E-mail</div>
+          <input class="input" id="loginEmail" type="email" placeholder="seu@email.com" autocomplete="email">
+        </div>
+        <div class="field">
+          <div class="label">Senha</div>
+          <input class="input" id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <button class="btn btn-primary" id="loginBtn" style="margin-top:6px">Entrar</button>
+        <div class="msg" id="loginMsg"></div>
+        <div class="or-sep">ou</div>
+        <div style="text-align:center;font-size:13px;color:var(--muted2)">
+          Não tem conta? <button class="link-btn" id="goRegister">Criar conta</button>
+        </div>
+      </div>
 
-    <div class="or-sep">ou entre em uma sala</div>
-
-    <div class="join-row">
-      <input class="input" id="codeInput" maxlength="4" placeholder="CÓDIGO">
-      <button class="btn btn-green" id="joinBtn">Entrar</button>
+      <!-- REGISTER -->
+      <div id="authRegister" style="display:none">
+        <div class="card-title">Criar conta</div>
+        <div class="card-sub">Grátis, sem cartão.</div>
+        <div class="field">
+          <div class="label">Nome</div>
+          <input class="input" id="regName" type="text" maxlength="20" placeholder="Como quer aparecer" autocomplete="name">
+        </div>
+        <div class="field">
+          <div class="label">E-mail</div>
+          <input class="input" id="regEmail" type="email" placeholder="seu@email.com" autocomplete="email">
+        </div>
+        <div class="field">
+          <div class="label">Senha</div>
+          <input class="input" id="regPass" type="password" placeholder="mínimo 6 caracteres" autocomplete="new-password">
+        </div>
+        <button class="btn btn-primary" id="registerBtn" style="margin-top:6px">Criar conta</button>
+        <div class="msg" id="registerMsg"></div>
+        <div class="or-sep">ou</div>
+        <div style="text-align:center;font-size:13px;color:var(--muted2)">
+          Já tem conta? <button class="link-btn" id="goLogin">Entrar</button>
+        </div>
+      </div>
     </div>
-
-    <div class="msg" id="setupMsg"></div>
-    <div class="hint">Cole o link .mp4 direto. Se colar a página do filme, o site tenta achar o .mp4 sozinho.</div>
   </div>
 
-  <!-- ROOM -->
-  <div id="room">
+  <!-- PAGE: lobby -->
+  <div class="page" id="pageLobby">
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <div>
+          <div class="card-title" id="lobbyGreeting">Olá!</div>
+          <div style="font-size:13px;color:var(--muted2);margin-top:2px">O que vamos assistir?</div>
+        </div>
+        <button class="btn-danger btn" id="logoutBtn" style="padding:7px 12px;font-size:12px">Sair</button>
+      </div>
+      <div class="field">
+        <div class="label">Link do filme</div>
+        <input class="input" id="urlInput" placeholder="https://... (.mp4 ou página do filme)">
+      </div>
+      <button class="btn btn-primary" id="createBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        Criar sala
+      </button>
+      <div class="or-sep">ou entre em uma sala</div>
+      <div class="join-row">
+        <input class="input" id="codeInput" maxlength="4" placeholder="CÓDIGO">
+        <button class="btn btn-green" id="joinBtn">Entrar</button>
+      </div>
+      <div class="msg" id="lobbyMsg"></div>
+      <div class="hint">Cole o link .mp4 direto ou a página do filme.</div>
+    </div>
+  </div>
+
+  <!-- PAGE: room -->
+  <div class="page" id="pageRoom">
     <div class="room-header">
       <div class="room-title">
-        <div class="room-wordmark">
+        <a class="room-wordmark" href="#" id="roomHomeLink">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.409 9.353C22.53 10.507 22.53 13.493 20.409 14.647L7.597 21.614C5.534 22.736 3 21.276 3 18.967L3 5.033C3 2.724 5.534 1.264 7.597 2.385L20.409 9.353Z"/></svg>
           PKWatch
-        </div>
-        <div class="badge" id="badge">SALA –</div>
+        </a>
+        <div class="badge" id="badge">–</div>
       </div>
       <div class="room-actions">
         <button class="btn btn-ghost" id="copyBtn">
@@ -200,25 +248,19 @@ video{width:100%;height:100%;display:block;background:#000}
 
     <div class="room-body">
       <div class="room-left">
-        <div class="stage" id="stage">
+        <div class="stage">
           <video id="video" playsinline webkit-playsinline preload="metadata"></video>
-          <!-- guest lock: blocks all clicks on video -->
-          <div class="guest-lock" id="guestLock" style="display:none"></div>
+          <div class="guest-lock" id="guestLock"></div>
           <div class="stage-overlay" id="stageOverlay">
-            <div class="stage-overlay-text" id="stageOverlayText">Aguardando o host iniciar…</div>
+            <div class="stage-overlay-text" id="stageOverlayText">Aguardando o host…</div>
           </div>
         </div>
         <div class="status-bar">
           <div class="dot" id="dot"></div>
-          <div class="status-text" id="status">Conectando…</div>
+          <div class="status-text" id="statusText">–</div>
           <div class="status-pill" id="countPill">1 na sala</div>
         </div>
-        <!-- host controls only -->
-        <div id="hostControls" style="display:none;margin-top:4px">
-          <video id="videoHost" style="display:none"></video>
-        </div>
       </div>
-
       <div class="room-right">
         <div class="chat">
           <div class="chat-header">Chat</div>
@@ -232,126 +274,142 @@ video{width:100%;height:100%;display:block;background:#000}
     </div>
   </div>
 
-</div><!-- /shell -->
+</div>
 
-<script src="https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js"></script>
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 (function(){
 'use strict';
 
-var $ = function(id){ return document.getElementById(id); };
-
-// ── config ──────────────────────────────────────────────
-var BROKERS = [
-  'wss://broker.emqx.io:8084/mqtt',
-  'wss://broker.hivemq.com:8884/mqtt'
-];
-var HOST_BROADCAST_MS  = 800;   // how often host pushes state
-var DRIFT_THRESHOLD    = 1.0;   // seconds before forced resync
-var PING_MS            = 5000;
-var PEER_TIMEOUT_MS    = 18000;
+// ── Supabase ─────────────────────────────────────────────
+var SUPA_URL = 'https://jqxrcyurvmgaikwjbimh.supabase.co';
+var SUPA_KEY = 'sb_publishable_tO6cYTMJh90adc6M7eToTw_5i-Vrrqe';
+var sb = supabase.createClient(SUPA_URL, SUPA_KEY);
 
 // ── state ────────────────────────────────────────────────
-var myId     = Math.random().toString(36).slice(2,8);
-var myName   = 'Convidado';
-var isHost   = false;
-var code     = null;
-var topic    = null;
+var currentUser = null;
+var currentProfile = null;
+var isHost = false;
+var roomCode = null;
 var movieUrl = '';
-var client   = null;
-
-var peers    = {};          // id → lastSeen timestamp
-var suppress = false;       // block echoing our own seeks
-var lastHostState = null;   // last state msg from host
-
+var realtimeChannel = null;
+var peers = {};   // id → {name, ts}
+var suppress = false;
+var lastHostState = null;
 var hostBcastTimer = null;
-var pingTimer      = null;
+var pingTimer = null;
+var pendingInvite = null; // {code, url} from hash
+
+var HOST_INTERVAL = 800;
+var DRIFT = 1.0;
+var PING_MS = 5000;
+var PEER_TIMEOUT = 18000;
 
 // ── elements ─────────────────────────────────────────────
-var video     = $('video');
-var overlay   = $('stageOverlay');
-var overlayTx = $('stageOverlayText');
+var $ = function(id){ return document.getElementById(id); };
+var video = $('video');
 var guestLock = $('guestLock');
+var stageOverlay = $('stageOverlay');
+var stageOverlayTx = $('stageOverlayText');
 
-// ── broker ───────────────────────────────────────────────
-function connect(i){
-  i = i || 0;
-  return new Promise(function(res, rej){
-    var c, done = false;
-    try{ c = mqtt.connect(BROKERS[i], {
-      clientId: 'pkw_'+myId+Date.now(),
-      clean: true, reconnectPeriod: 0, connectTimeout: 8000
-    }); }catch(e){ return rej(e); }
-    var to = setTimeout(function(){
-      if(!done){ done=true; try{c.end(true)}catch(e){} rej(new Error('timeout')); }
-    }, 9000);
-    c.on('connect', function(){ if(done)return; done=true; clearTimeout(to); res(c); });
-    c.on('error', function(){});
-  }).catch(function(){
-    if(i+1 < BROKERS.length) return connect(i+1);
-    throw new Error('sem broker');
+// ── page routing ─────────────────────────────────────────
+function showPage(id){
+  ['pageLoading','pageAuth','pageLobby','pageRoom'].forEach(function(p){
+    var el=$(p);
+    el.classList.remove('on');
   });
+  $(id).classList.add('on');
+  $('mainWordmark').style.display = (id==='pageRoom') ? 'none' : 'flex';
 }
 
-function pub(o, retain){
-  if(!client||!topic) return;
-  try{ client.publish(topic, JSON.stringify(o), {qos:0, retain:!!retain}); }catch(e){}
+// ── auth pages toggle ────────────────────────────────────
+$('goRegister').onclick = function(){ $('authLogin').style.display='none'; $('authRegister').style.display='block'; };
+$('goLogin').onclick    = function(){ $('authRegister').style.display='none'; $('authLogin').style.display='block'; };
+
+// ── register ─────────────────────────────────────────────
+$('registerBtn').onclick = async function(){
+  var name  = $('regName').value.trim();
+  var email = $('regEmail').value.trim();
+  var pass  = $('regPass').value;
+  if(!name||!email||!pass) return setAuthMsg('register','Preencha todos os campos.','err');
+  if(pass.length<6) return setAuthMsg('register','Senha precisa ter ao menos 6 caracteres.','err');
+  setAuthMsg('register','Criando conta…');
+  var res = await sb.auth.signUp({email:email, password:pass, options:{data:{name:name}}});
+  if(res.error) return setAuthMsg('register', res.error.message, 'err');
+  // session starts immediately (email confirmation off by default on new projects)
+  setAuthMsg('register','Conta criada!','ok');
+};
+
+// ── login ────────────────────────────────────────────────
+$('loginBtn').onclick = async function(){
+  var email = $('loginEmail').value.trim();
+  var pass  = $('loginPass').value;
+  if(!email||!pass) return setAuthMsg('login','Preencha e-mail e senha.','err');
+  setAuthMsg('login','Entrando…');
+  var res = await sb.auth.signInWithPassword({email:email, password:pass});
+  if(res.error) return setAuthMsg('login', res.error.message==='Invalid login credentials'?'E-mail ou senha incorretos.':res.error.message, 'err');
+};
+
+function setAuthMsg(form, txt, type){
+  var el = $(form==='login'?'loginMsg':'registerMsg');
+  el.textContent = txt||'';
+  el.className = 'msg'+(type?' '+type:'');
 }
 
-// ── host broadcasts authoritative state ──────────────────
-function hostBroadcast(){
-  if(!isHost) return;
-  pub({
-    t:'s', by:myId,
-    playing: !video.paused,
-    time: video.currentTime || 0,
-    ts: Date.now()
-  }, true);
-}
+// ── logout ───────────────────────────────────────────────
+$('logoutBtn').onclick = async function(){
+  await sb.auth.signOut();
+};
 
-// ── guest applies state from host ────────────────────────
-function applyHostState(m){
-  if(m.by === myId) return;          // ignore our own (shouldn't happen for guest)
-  lastHostState = m;
-  if(video.readyState < 1) return;
-
-  var latency = m.playing ? Math.min((Date.now()-m.ts)/1000, 30) : 0;
-  var target  = (m.time||0) + latency;
-  var drift   = Math.abs((video.currentTime||0) - target);
-
-  suppress = true;
-  if(drift > DRIFT_THRESHOLD){
-    try{ video.currentTime = target; }catch(e){}
+// ── auth state listener ──────────────────────────────────
+sb.auth.onAuthStateChange(async function(event, session){
+  if(session && session.user){
+    currentUser = session.user;
+    // load profile
+    var pr = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+    currentProfile = pr.data;
+    // check pending invite from hash
+    parsePendingHash();
+    if(pendingInvite){
+      enterRoom(pendingInvite.code, pendingInvite.url, false);
+      pendingInvite = null;
+    } else {
+      showPage('pageLobby');
+      $('lobbyGreeting').textContent = 'Olá, '+(currentProfile?currentProfile.name:currentUser.email.split('@')[0])+'!';
+    }
+  } else {
+    currentUser = null;
+    currentProfile = null;
+    showPage('pageAuth');
   }
-  if(m.playing && video.paused)  video.play().catch(function(){});
-  if(!m.playing && !video.paused) video.pause();
-  clearTimeout(applyHostState._t);
-  applyHostState._t = setTimeout(function(){ suppress=false; }, 600);
+});
 
-  // hide overlay once playing
-  if(m.playing){ overlay.style.opacity='0'; }
-  else          { overlay.style.opacity='0'; } // host paused = still in room, just paused
-}
-
-// ── incoming messages ────────────────────────────────────
-function onMsg(payload){
-  var m;
-  try{ m = JSON.parse(payload.toString()); }catch(e){ return; }
-
-  if(m.by && m.by !== myId) peers[m.by] = Date.now();
-
-  if(m.t === 's'){
-    if(!isHost) applyHostState(m);
-  } else if(m.t === 'hello'){
-    // new guest joined — host re-broadcasts current state immediately
-    if(isHost){ hostBroadcast(); setTimeout(hostBroadcast, 500); }
-  } else if(m.t === 'bye'){
-    if(m.by) delete peers[m.by];
-  } else if(m.t === 'chat' && m.by !== myId){
-    addMsg(m.name||'?', m.text||'', false);
+// ── init ─────────────────────────────────────────────────
+(async function(){
+  parsePendingHash();
+  var s = await sb.auth.getSession();
+  if(!s.data.session){
+    showPage('pageAuth');
+    if(pendingInvite){
+      // show "entre para assistir" message
+      setAuthMsg('login','Entre ou crie uma conta para entrar na sala '+pendingInvite.code+'.','ok');
+    }
   }
+  // onAuthStateChange handles the rest
+})();
 
-  renderPeers();
+// ── hash parsing ─────────────────────────────────────────
+function parsePendingHash(){
+  var h = location.hash.replace(/^#/,'');
+  if(!h) return;
+  var p = new URLSearchParams(h);
+  var s = p.get('s'), v = p.get('v');
+  if(s){
+    pendingInvite = {code:s.toUpperCase(), url:v?decodeURIComponent(v):''};
+    if(v) $('urlInput').value = decodeURIComponent(v);
+    $('codeInput').value = s.toUpperCase();
+  }
 }
 
 // ── url resolver ─────────────────────────────────────────
@@ -359,8 +417,8 @@ function normUrl(u){
   u=(u||'').trim();
   if(!u) return '';
   if(u.indexOf('//')=== 0) u='https:'+u;
-  if(u.indexOf('http://')===0) u='https://'+u.slice(7);
-  if(u.indexOf('https://')!==0) u='https://'+u;
+  if(u.startsWith('http://')) u='https://'+u.slice(7);
+  if(!u.startsWith('https://')) u='https://'+u;
   return u;
 }
 async function resolveUrl(u){
@@ -371,191 +429,236 @@ async function resolveUrl(u){
       var r=await fetch(proxies[i]+encodeURIComponent(u));
       if(!r.ok) continue;
       var t=await r.text();
-      var match=t.match(/https?:\/\/[^"'\s\\]+\.mp4/);
-      if(match) return match[0];
+      var m=t.match(/https?:\/\/[^"'\s\\]+\.mp4/);
+      if(m) return m[0];
     }catch(e){}
   }
   return u;
 }
 
-// ── code gen ─────────────────────────────────────────────
+// ── lobby ─────────────────────────────────────────────────
+function setLobbyMsg(t,type){ var el=$('lobbyMsg'); el.textContent=t||''; el.className='msg'+(type?' '+type:''); }
+
+$('createBtn').onclick = async function(){
+  var raw = normUrl($('urlInput').value);
+  if(!raw) return setLobbyMsg('Cole o link do filme.','err');
+  setLobbyMsg('Procurando o vídeo…');
+  var url = normUrl(await resolveUrl(raw));
+  var code = genCode();
+  // save room to db
+  await sb.from('rooms').insert({id:code, host_id:currentUser.id, movie_url:url});
+  setLobbyMsg('Conectando…');
+  enterRoom(code, url, true);
+};
+
+$('joinBtn').onclick = async function(){
+  var c = ($('codeInput').value||'').trim().toUpperCase();
+  if(c.length<3) return setLobbyMsg('Digite o código da sala.','err');
+  setLobbyMsg('Buscando sala…');
+  // fetch room url from db
+  var res = await sb.from('rooms').select('movie_url').eq('id',c).single();
+  if(res.error||!res.data) return setLobbyMsg('Sala não encontrada.','err');
+  enterRoom(c, res.data.movie_url, false);
+};
+
 function genCode(){
   var a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  var c='';
-  for(var i=0;i<4;i++) c+=a.charAt(Math.floor(Math.random()*a.length));
+  var c=''; for(var i=0;i<4;i++) c+=a[Math.floor(Math.random()*a.length)];
   return c;
 }
 
-// ── UI helpers ───────────────────────────────────────────
-function setMsg(t, type){
-  var el=$('setupMsg');
-  el.textContent=t||'';
-  el.className='msg'+(type?' '+type:'');
-}
-function setStatus(t){
-  $('status').textContent=t||'';
-}
-function renderPeers(){
-  var now=Date.now();
-  for(var k in peers){ if(now-peers[k]>PEER_TIMEOUT_MS) delete peers[k]; }
-  var n=Object.keys(peers).length+1;
-  $('countPill').textContent=n+(n===1?' na sala':' na sala');
-  $('dot').className='dot'+(client?' on':'');
-}
+// ── enter room ───────────────────────────────────────────
+function enterRoom(code, url, host){
+  roomCode = code;
+  movieUrl = url;
+  isHost   = host;
 
-function addMsg(name, text, me){
-  var d=document.createElement('div');
-  d.className='m'+(me?' me':'');
-  var nameEl=document.createElement('div');
-  nameEl.className='m-name';
-  nameEl.textContent=name;
-  var bubble=document.createElement('div');
-  bubble.className='m-bubble';
-  bubble.textContent=text;
-  d.appendChild(nameEl);
-  d.appendChild(bubble);
-  var box=$('msgs');
-  box.appendChild(d);
-  while(box.children.length>100) box.removeChild(box.firstChild);
-  box.scrollTop=box.scrollHeight;
-}
+  showPage('pageRoom');
+  $('badge').textContent = 'SALA '+code;
 
-// ── join room (shared between create & join) ─────────────
-function finishJoin(host){
-  topic   = 'pkwatch/'+code;
-  isHost  = host;
-
-  $('setup').style.display='none';
-  $('mainWordmark').style.display='none';
-  $('room').classList.add('on');
-  $('badge').textContent='SALA '+code;
-
-  video.src=movieUrl;
+  video.src = url;
   video.load();
 
-  // guest: block all controls
-  if(!isHost){
-    video.controls=false;
-    guestLock.style.display='block';
-    overlayTx.textContent='Aguardando o host iniciar…';
-    overlay.style.opacity='1';
+  if(isHost){
+    video.controls = true;
+    guestLock.style.display = 'none';
+    stageOverlayTx.textContent = 'Toque no play para começar';
+    try{ history.replaceState(null,'','#s='+code+'&v='+encodeURIComponent(url)); }catch(e){}
   } else {
-    video.controls=true;
-    overlay.style.opacity='1';
-    overlayTx.textContent='Toque no play para começar';
+    video.controls = false;
+    guestLock.style.display = 'block';
+    stageOverlayTx.textContent = 'Aguardando o host iniciar…';
   }
+  stageOverlay.style.opacity = '1';
 
-  if(client){
-    client.on('message', function(t,p){ onMsg(p); });
-    client.subscribe(topic, {qos:0});
-  }
+  subscribeRealtime(code);
 
-  // host: start broadcasting loop
   if(isHost){
     clearInterval(hostBcastTimer);
-    hostBcastTimer=setInterval(hostBroadcast, HOST_BROADCAST_MS);
-    // push URL into hash so share link works
-    try{ history.replaceState(null,'','#s='+code+'&v='+encodeURIComponent(movieUrl)); }catch(e){}
+    hostBcastTimer = setInterval(hostBroadcast, HOST_INTERVAL);
   }
 
-  // guest: announce presence
-  if(!isHost && client){
-    setTimeout(function(){ pub({t:'hello',by:myId}); }, 400);
-  }
-
-  // ping loop
   clearInterval(pingTimer);
-  pingTimer=setInterval(function(){
-    pub({t:'ping',by:myId});
-    renderPeers();
+  pingTimer = setInterval(function(){
+    sendPresence();
+    prunePeers();
   }, PING_MS);
+
+  sendPresence();
+  if(!isHost) setTimeout(function(){ broadcast({t:'hello', by:myId(), name:myName()}); }, 400);
 
   setStatus(isHost ? 'Você é o host' : 'Conectado como convidado');
   renderPeers();
 }
 
-// ── video events (host only broadcasts, guest ignores) ───
-video.addEventListener('play',   function(){ if(isHost&&!suppress){ hostBroadcast(); overlay.style.opacity='0'; } });
+// ── Supabase Realtime ─────────────────────────────────────
+function subscribeRealtime(code){
+  if(realtimeChannel){ sb.removeChannel(realtimeChannel); realtimeChannel=null; }
+
+  realtimeChannel = sb.channel('room:'+code, {
+    config: { broadcast: { self: false }, presence: { key: myId() } }
+  });
+
+  realtimeChannel
+    .on('broadcast', {event:'*'}, function(payload){
+      onMsg(payload.payload);
+    })
+    .on('presence', {event:'sync'}, function(){
+      var state = realtimeChannel.presenceState();
+      peers = {};
+      Object.keys(state).forEach(function(k){
+        var entry = state[k][0];
+        if(entry && entry.id !== myId()) peers[entry.id] = {name:entry.name, ts:Date.now()};
+      });
+      renderPeers();
+    })
+    .subscribe(function(status){
+      if(status==='SUBSCRIBED'){
+        $('dot').className='dot on';
+        realtimeChannel.track({id:myId(), name:myName()});
+      }
+    });
+}
+
+function broadcast(obj){
+  if(!realtimeChannel) return;
+  realtimeChannel.send({type:'broadcast', event:'msg', payload:obj});
+}
+
+// ── presence ──────────────────────────────────────────────
+function sendPresence(){
+  if(realtimeChannel) realtimeChannel.track({id:myId(), name:myName()});
+}
+function prunePeers(){
+  var now=Date.now();
+  Object.keys(peers).forEach(function(k){ if(now-peers[k].ts>PEER_TIMEOUT) delete peers[k]; });
+  renderPeers();
+}
+function renderPeers(){
+  var n=Object.keys(peers).length+1;
+  $('countPill').textContent=n+(n===1?' na sala':' na sala');
+}
+
+// ── host broadcast ────────────────────────────────────────
+function hostBroadcast(){
+  if(!isHost) return;
+  broadcast({t:'s', by:myId(), playing:!video.paused, time:video.currentTime||0, ts:Date.now()});
+}
+
+// ── apply host state (guest) ──────────────────────────────
+function applyHostState(m){
+  lastHostState = m;
+  if(video.readyState<1) return;
+  var lat = m.playing ? Math.min((Date.now()-m.ts)/1000,30) : 0;
+  var target = (m.time||0)+lat;
+  var drift = Math.abs((video.currentTime||0)-target);
+  suppress=true;
+  if(drift>DRIFT){ try{video.currentTime=target}catch(e){} }
+  if(m.playing&&video.paused)  video.play().catch(function(){});
+  if(!m.playing&&!video.paused) video.pause();
+  clearTimeout(applyHostState._t);
+  applyHostState._t=setTimeout(function(){suppress=false;},600);
+  stageOverlay.style.opacity='0';
+}
+
+// ── incoming messages ─────────────────────────────────────
+function onMsg(m){
+  if(!m||!m.t) return;
+  if(m.by) peers[m.by]={name:m.name||'?', ts:Date.now()};
+
+  if(m.t==='s'){
+    if(!isHost) applyHostState(m);
+  } else if(m.t==='hello'){
+    if(isHost){ hostBroadcast(); setTimeout(hostBroadcast,400); }
+  } else if(m.t==='chat' && m.by!==myId()){
+    addMsg(m.name||'?', m.text||'', false);
+  }
+  renderPeers();
+}
+
+// ── video events ──────────────────────────────────────────
+video.addEventListener('play',   function(){ if(isHost&&!suppress){ hostBroadcast(); stageOverlay.style.opacity='0'; }});
 video.addEventListener('pause',  function(){ if(isHost&&!suppress) hostBroadcast(); });
 video.addEventListener('seeked', function(){ if(isHost&&!suppress) hostBroadcast(); });
-video.addEventListener('canplay',function(){ if(isHost) overlay.style.opacity='0'; });
-video.addEventListener('waiting',function(){ overlay.style.opacity='1'; overlayTx.textContent='Carregando…'; });
-video.addEventListener('loadedmetadata',function(){
-  if(!isHost && lastHostState) applyHostState(lastHostState);
-});
+video.addEventListener('canplay',function(){ if(isHost) stageOverlay.style.opacity='0'; });
+video.addEventListener('waiting',function(){ stageOverlay.style.opacity='1'; stageOverlayTx.textContent='Carregando…'; });
+video.addEventListener('loadedmetadata',function(){ if(!isHost&&lastHostState) applyHostState(lastHostState); });
 
-// ── create ───────────────────────────────────────────────
-$('createBtn').onclick=async function(){
-  var raw=normUrl($('urlInput').value);
-  if(!raw) return setMsg('Cole o link do filme.','err');
-  myName=($('nameInput').value||'Host').slice(0,16);
-  setMsg('Procurando o vídeo…');
-  movieUrl=normUrl(await resolveUrl(raw));
-  code=genCode();
-  setMsg('Conectando…');
-  try{ client=await connect(); }catch(e){ client=null; }
-  finishJoin(true);
-};
-
-// ── join ─────────────────────────────────────────────────
-$('joinBtn').onclick=async function(){
-  var c=($('codeInput').value||'').trim().toUpperCase();
-  if(c.length<3) return setMsg('Digite o código da sala.','err');
-  var raw=normUrl($('urlInput').value);
-  myName=($('nameInput').value||'Convidada').slice(0,16);
-  setMsg('Procurando o vídeo…');
-  movieUrl=raw?normUrl(await resolveUrl(raw)):movieUrl;
-  code=c;
-  setMsg('Entrando na sala…');
-  try{ client=await connect(); }catch(e){ client=null; }
-  finishJoin(false);
-};
-
-// ── copy link ────────────────────────────────────────────
+// ── copy link ─────────────────────────────────────────────
 $('copyBtn').onclick=function(){
-  var link=location.origin+location.pathname+'#s='+code+'&v='+encodeURIComponent(movieUrl);
+  var link=location.origin+location.pathname+'#s='+roomCode+'&v='+encodeURIComponent(movieUrl);
   if(navigator.clipboard&&navigator.clipboard.writeText){
     navigator.clipboard.writeText(link).then(
-      function(){ setStatus('Link copiado!'); setTimeout(function(){ setStatus(isHost?'Você é o host':'Conectado como convidado'); },2000); },
+      function(){ setStatus('Link copiado!'); setTimeout(function(){setStatus(isHost?'Você é o host':'Conectado como convidado');},2000); },
       function(){ prompt('Copie o link:',link); }
     );
   } else { prompt('Copie o link:',link); }
 };
 
-// ── leave ────────────────────────────────────────────────
+// ── leave ─────────────────────────────────────────────────
 $('leaveBtn').onclick=function(){
-  try{ pub({t:'bye',by:myId}); }catch(e){}
+  broadcast({t:'bye',by:myId()});
+  cleanup();
+  showPage('pageLobby');
+};
+$('roomHomeLink').onclick=function(e){e.preventDefault();$('leaveBtn').click();};
+
+function cleanup(){
   clearInterval(hostBcastTimer);
   clearInterval(pingTimer);
-  location.href=location.pathname;
-};
+  if(realtimeChannel){ sb.removeChannel(realtimeChannel); realtimeChannel=null; }
+  video.pause(); video.src='';
+  peers={};
+}
 
-// ── chat ─────────────────────────────────────────────────
+// ── chat ──────────────────────────────────────────────────
 $('sendBtn').onclick=function(){
-  var v=$('chatInput').value.trim();
-  if(!v) return;
+  var v=$('chatInput').value.trim(); if(!v) return;
   $('chatInput').value='';
-  addMsg(myName,v,true);
-  pub({t:'chat',by:myId,name:myName,text:v});
+  addMsg(myName(),v,true);
+  broadcast({t:'chat',by:myId(),name:myName(),text:v});
 };
-$('chatInput').addEventListener('keydown',function(e){
-  if(e.key==='Enter'){ e.preventDefault(); $('sendBtn').click(); }
+$('chatInput').addEventListener('keydown',function(e){ if(e.key==='Enter'){e.preventDefault();$('sendBtn').click();} });
+
+function addMsg(name,text,me){
+  var d=document.createElement('div'); d.className='m'+(me?' me':'');
+  var n=document.createElement('div'); n.className='m-name'; n.textContent=name;
+  var b=document.createElement('div'); b.className='m-bubble'; b.textContent=text;
+  d.appendChild(n); d.appendChild(b);
+  var box=$('msgs'); box.appendChild(d);
+  while(box.children.length>100) box.removeChild(box.firstChild);
+  box.scrollTop=box.scrollHeight;
+}
+
+// ── helpers ───────────────────────────────────────────────
+function myId(){ return currentUser?currentUser.id:'anon'; }
+function myName(){ return currentProfile?currentProfile.name:(currentUser?currentUser.email.split('@')[0]:'?'); }
+function setStatus(t){ $('statusText').textContent=t||''; }
+
+window.addEventListener('pagehide',function(){
+  broadcast({t:'bye',by:myId()});
+  cleanup();
 });
-
-// ── cleanup on close ─────────────────────────────────────
-window.addEventListener('pagehide',function(){ try{pub({t:'bye',by:myId})}catch(e){} });
-
-// ── parse invite link ────────────────────────────────────
-(function(){
-  var h=location.hash.replace(/^#/,'');
-  if(!h) return;
-  var p=new URLSearchParams(h);
-  if(p.get('v')) $('urlInput').value=decodeURIComponent(p.get('v'));
-  if(p.get('s')){
-    $('codeInput').value=p.get('s').toUpperCase();
-    setMsg('Convite para a sala '+p.get('s').toUpperCase()+'. Seu nome e toque em Entrar.');
-  }
-})();
 
 })();
 </script>
