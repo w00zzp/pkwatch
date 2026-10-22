@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0b10">
+<title>PK Watch - assistir junto</title>
+<style>
+body{margin:0;background:#0b0b10}
+.wrap{max-width:520px;margin:0 auto;padding:14px;font:15px/1.45 -apple-system,system-ui,"Segoe UI",Roboto,sans-serif;color:#eee}
+.wrap h1{font-size:18px;margin:0 0 2px;font-weight:600}
+.wrap .sub{color:#9aa0aa;font-size:12px;margin-bottom:12px}
+.wrap label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#9aa0aa;margin:12px 0 5px}
+.wrap input{width:100%;padding:12px;border-radius:10px;border:1px solid #26262f;background:#17171f;color:#eee;font-size:15px}
+.wrap input:focus{outline:none;border-color:#6A5ACD}
+.wrap button{padding:12px 14px;border-radius:10px;border:1px solid #26262f;background:#1d1d26;color:#eee;font-size:14px;font-weight:600;cursor:pointer}
+.wrap button.p{background:#6A5ACD;border-color:#6A5ACD;color:#fff;width:100%}
+.wrap button.g{background:#22c55e;border-color:#22c55e;color:#06240f}
+.wrap .row{display:flex;gap:8px;margin-top:8px}
+.wrap .row input{flex:1;text-transform:uppercase}
+.wrap .or{text-align:center;color:#9aa0aa;font-size:11px;margin:14px 0 0}
+.wrap .msg{font-size:12px;color:#9aa0aa;margin-top:12px;min-height:16px}
+.wrap .badge{display:none;background:#1d1d26;border:1px solid #26262f;border-radius:999px;padding:4px 10px;font-size:11px;letter-spacing:.08em;margin-bottom:10px}
+.wrap #room{display:none}
+.wrap #room.on{display:block}
+.wrap .stage{position:relative;background:#000;border-radius:12px;overflow:hidden;aspect-ratio:16/9}
+.wrap video{width:100%;height:100%;display:block;background:#000}
+.wrap .load{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#bbb;font-size:13px;pointer-events:none;transition:opacity .3s}
+.wrap .bar{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.wrap .bar .st{flex:1;font-size:12px;color:#9aa0aa}
+.wrap .bar button{padding:8px 10px;font-size:12px}
+.wrap .chat{margin-top:12px;border:1px solid #26262f;border-radius:12px;overflow:hidden}
+.wrap .msgs{height:150px;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px}
+.wrap .m{font-size:13px;line-height:1.35;max-width:85%}
+.wrap .m b{color:#a78bfa;font-weight:600}
+.wrap .m.me{align-self:flex-end;text-align:right}
+.wrap .m.me b{color:#67e8f9}
+.wrap .m span{display:inline-block;background:#1d1d26;padding:6px 10px;border-radius:10px;margin-top:2px}
+.wrap .cf{display:flex;gap:8px;padding:8px;border-top:1px solid #26262f}
+.wrap .cf input{padding:9px;font-size:14px}
+.wrap .hint{font-size:11px;color:#9aa0aa;margin-top:14px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>PK Watch</h1>
+  <div class="sub">Quem cria manda o link. Quem recebe entra e assiste junto, no mesmo segundo.</div>
+  <div class="badge" id="badge">SALA -</div>
+
+  <div id="setup">
+    <label for="urlInput">Link do filme (.mp4 ou link da pagina)</label>
+    <input id="urlInput" value="https://awnagk.gviudclrb.com/vod/71796FA488A24F5FB8BEC47F5F7E2D18_media.mp4">
+    <label for="nameInput">Seu nome</label>
+    <input id="nameInput" maxlength="14" placeholder="Ex: Alzira">
+    <button class="p" id="createBtn" style="margin-top:14px">Criar sala e gerar link</button>
+    <div class="or">ou entre com um codigo</div>
+    <div class="row">
+      <input id="codeInput" maxlength="6" placeholder="CODIGO">
+      <button class="g" id="joinBtn">Entrar</button>
+    </div>
+    <div class="msg" id="setupMsg"></div>
+    <div class="hint">Cole o link .mp4 do filme. Se colar o link da pagina do filme, ele tenta achar o .mp4 sozinho.</div>
+  </div>
+
+  <div id="room">
+    <div class="stage">
+      <video id="video" playsinline webkit-playsinline controls preload="metadata"></video>
+      <div class="load" id="load">Toque no play para comecar</div>
+    </div>
+    <div class="bar">
+      <div class="st" id="status">-</div>
+      <button id="syncBtn">Ressincronizar</button>
+      <button id="copyBtn">Copiar link</button>
+      <button id="leaveBtn">Sair</button>
+    </div>
+    <div class="chat">
+      <div class="msgs" id="msgs"></div>
+      <div class="cf">
+        <input id="chatInput" maxlength="140" placeholder="Mensagem...">
+        <button id="sendBtn">Enviar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js"></script>
+<script>
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var BROKERS=['wss://broker.emqx.io:8084/mqtt','wss://broker.hivemq.com:8884/mqtt'];
+  var video=$('video'),client=null,topic=null,code=null,movieUrl='',isHost=false,lastState=null;
+  var myId=Math.random().toString(36).slice(2,8),myName='Convidado';
+  var suppress=false,peers={},hostTimer=null,pingTimer=null;
+
+  function setMsg(t){$('setupMsg').textContent=t||''}
+  function status(t){$('status').textContent=t}
+  function normUrl(u){u=(u||'').trim();if(!u)return'';if(u.indexOf('//')===0)u='https:'+u;if(u.indexOf('http://')===0)u='https://'+u.slice(7);if(u.indexOf('https://')!==0)u='https://'+u;return u}
+  function genCode(){var a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789',c='';for(var i=0;i<4;i++)c+=a.charAt(Math.floor(Math.random()*a.length));return c}
+
+  function connect(i){
+    i=i||0;
+    return new Promise(function(res,rej){
+      var c,done=false;
+      try{c=mqtt.connect(BROKERS[i],{clientId:'pkw_'+myId+Date.now(),clean:true,reconnectPeriod:5000,connectTimeout:8000})}catch(e){return rej(e)}
+      var to=setTimeout(function(){if(!done){done=true;try{c.end(true)}catch(e){}rej(new Error('timeout'))}},9000);
+      c.on('connect',function(){if(done)return;done=true;clearTimeout(to);res(c)});
+      c.on('error',function(){});
+    }).catch(function(){if(i+1<BROKERS.length)return connect(i+1);throw new Error('sem broker')});
+  }
+  function pub(o,retain){if(!client||!topic)return;try{client.publish(topic,JSON.stringify(o),{qos:0,retain:!!retain})}catch(e){}}
+  function pubState(p){pub({t:'s',by:myId,playing:(p===undefined?!video.paused:p),time:video.currentTime||0,ts:Date.now()},true)}
+
+  async function resolveUrl(u){
+    if(/\.mp4(\?|$)/i.test(u))return u;
+    var proxies=['https://api.allorigins.win/raw?url=','https://corsproxy.io/?'];
+    for(var i=0;i<proxies.length;i++){
+      try{
+        var r=await fetch(proxies[i]+encodeURIComponent(u));
+        if(!r.ok)continue;
+        var t=await r.text();
+        var m=t.match(/https?:\/\/[^"'\s\\]+\.mp4/);
+        if(m)return m[0];
+      }catch(e){}
+    }
+    return u;
+  }
+
+  function applyState(m){
+    if(m.by===myId)return;
+    lastState=m;
+    if(video.readyState<1)return;
+    var lat=m.playing?Math.min((Date.now()-m.ts)/1000,30):0;
+    var target=(m.time||0)+lat;
+    suppress=true;
+    if(Math.abs((video.currentTime||0)-target)>1.3){try{video.currentTime=target}catch(e){}}
+    if(m.playing&&video.paused)video.play().catch(function(){});
+    if(!m.playing&&!video.paused)video.pause();
+    clearTimeout(applyState._t);
+    applyState._t=setTimeout(function(){suppress=false},500);
+  }
+  function addMsg(name,text,me){
+    var d=document.createElement('div');d.className='m'+(me?' me':'');
+    var b=document.createElement('b');b.textContent=name;
+    var s=document.createElement('span');s.textContent=text;
+    d.appendChild(b);d.appendChild(document.createElement('br'));d.appendChild(s);
+    var box=$('msgs');box.appendChild(d);
+    while(box.children.length>80)box.removeChild(box.firstChild);
+    box.scrollTop=box.scrollHeight;
+  }
+  function renderCount(){var n=Object.keys(peers).length+1;status(n+(n>1?' na sala':' sozinho')+(client?' - sincronizado':' - sem sync'))}
+  function prune(){var now=Date.now();for(var k in peers){if(now-peers[k]>22000)delete peers[k]}renderCount()}
+
+  function onMsg(p){
+    var m;try{m=JSON.parse(p.toString())}catch(e){return}
+    if(m.by&&m.by!==myId)peers[m.by]=Date.now();
+    if(m.t==='s'){applyState(m)}
+    else if(m.t==='hello'){if(isHost){pubState();setTimeout(function(){pubState()},700)}}
+    else if(m.t==='bye'){if(m.by)delete peers[m.by]}
+    else if(m.t==='chat'&&m.by!==myId){addMsg(m.name||'?',m.text||'',false)}
+    renderCount();
+  }
+
+  function finishJoin(host){
+    topic='pkwatch/'+code;
+    $('setup').style.display='none';
+    $('room').classList.add('on');
+    $('badge').style.display='inline-block';
+    $('badge').textContent='SALA '+code;
+    video.src=movieUrl;
+    video.load();
+    if(client){
+      client.on('message',function(t,p){onMsg(p)});
+      client.subscribe(topic,{qos:0});
+      if(host)setTimeout(function(){pubState(!video.paused)},600);
+    }
+    if(host){clearInterval(hostTimer);hostTimer=setInterval(function(){pubState(!video.paused)},5000)}
+    clearInterval(pingTimer);pingTimer=setInterval(function(){pub({t:'ping',by:myId});prune()},7000);
+    renderCount();
+    if(host){try{history.replaceState(null,'','#s='+code+'&v='+encodeURIComponent(movieUrl))}catch(e){}}
+  }
+
+  video.addEventListener('play',function(){if(!suppress)pubState(true);$('load').style.opacity='0'});
+  video.addEventListener('pause',function(){if(!suppress)pubState(false)});
+  video.addEventListener('seeked',function(){if(!suppress)pubState()});
+  video.addEventListener('canplay',function(){$('load').style.opacity='0'});
+  video.addEventListener('waiting',function(){$('load').style.opacity='1';$('load').textContent='Carregando...'});
+  video.addEventListener('loadedmetadata',function(){if(!isHost&&lastState)applyState(lastState)});
+
+  $('createBtn').onclick=async function(){
+    var raw=normUrl($('urlInput').value);
+    if(!raw)return setMsg('Cole o link do filme.');
+    myName=($('nameInput').value||'Host').slice(0,14);
+    setMsg('Procurando o video...');
+    movieUrl=normUrl(await resolveUrl(raw));
+    code=genCode();isHost=true;setMsg('Conectando...');
+    try{client=await connect()}catch(e){client=null}
+    finishJoin(true);
+  };
+
+  $('joinBtn').onclick=async function(){
+    var c=($('codeInput').value||'').trim().toUpperCase();
+    if(c.length<3)return setMsg('Digite o codigo da sala.');
+    var raw=normUrl($('urlInput').value);
+    myName=($('nameInput').value||'Convidada').slice(0,14);
+    setMsg('Procurando o video...');
+    movieUrl=normUrl(await resolveUrl(raw));
+    code=c;isHost=false;setMsg('Entrando...');
+    try{client=await connect()}catch(e){client=null}
+    finishJoin(false);
+    if(client)setTimeout(function(){pub({t:'hello',by:myId})},400);
+    video.play().catch(function(){});
+  };
+
+  $('syncBtn').onclick=function(){
+    if(isHost){pubState();status('Sincronizado')}
+    else{pub({t:'hello',by:myId});status('Pedindo sincronia...')}
+  };
+  $('copyBtn').onclick=function(){
+    var link=location.origin+location.pathname+'#s='+code+'&v='+encodeURIComponent(movieUrl);
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(link).then(function(){status('Link copiado!')},function(){prompt('Copie o link:',link)})}
+    else{prompt('Copie o link:',link)}
+  };
+  $('leaveBtn').onclick=function(){try{pub({t:'bye',by:myId})}catch(e){};location.href=location.pathname};
+  $('sendBtn').onclick=function(){
+    var v=$('chatInput').value.trim();if(!v)return;
+    $('chatInput').value='';addMsg(myName,v,true);pub({t:'chat',by:myId,name:myName,text:v});
+  };
+  $('chatInput').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();$('sendBtn').click()}});
+  window.addEventListener('pagehide',function(){pub({t:'bye',by:myId})});
+
+  (function(){
+    var h=location.hash.replace(/^#/,'');if(!h)return;
+    var p=new URLSearchParams(h);
+    if(p.get('v'))$('urlInput').value=decodeURIComponent(p.get('v'));
+    if(p.get('s')){$('codeInput').value=p.get('s').toUpperCase();setMsg('Convite para a sala '+p.get('s').toUpperCase()+'. Toque em Entrar.')}
+  })();
+})();
+</script>
+</body>
+</html>
